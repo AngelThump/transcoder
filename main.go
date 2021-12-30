@@ -24,13 +24,11 @@ func main() {
 
 	var mainWg sync.WaitGroup
 	mainWg.Add(1)
-	/*
-		dropletId := api.GetDropletId()
-		if dropletId == "" {
-			log.Fatal("Droplet Id could not be found..")
-		}
-		check(dropletId)*/
-	check("279964037")
+	dropletId := api.GetDropletId()
+	if dropletId == "" {
+		log.Fatal("Droplet Id could not be found..")
+	}
+	check(dropletId)
 	mainWg.Wait()
 }
 
