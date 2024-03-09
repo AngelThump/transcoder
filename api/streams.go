@@ -32,14 +32,14 @@ type TranscodeData struct {
 }
 
 type Output struct {
-	Name           string `json:"name"`
-	Variant        string `json:"variant"`
-	Bandwidth      int    `json:"bandwidth"`
-	AudioBandwidth string `json:"audio_bandwidth"`
-	VideoBandwidth string `json:"video_bandwidth"`
-	Width          int    `json:"width"`
-	Height         int    `json:"height"`
-	FrameRate      int    `json:"framerate"`
+	Name           string  `json:"name"`
+	Variant        string  `json:"variant"`
+	Bandwidth      int     `json:"bandwidth"`
+	AudioBandwidth string  `json:"audio_bandwidth"`
+	VideoBandwidth string  `json:"video_bandwidth"`
+	Width          int     `json:"width"`
+	Height         int     `json:"height"`
+	FrameRate      float64 `json:"framerate"`
 }
 
 func GetStream(streamId string) *Stream {

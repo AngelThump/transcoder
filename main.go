@@ -85,7 +85,7 @@ func startTranscode(stream *api.Stream, output api.Output) {
 	} else {
 		cmd = exec.Command("ffmpeg", "-hide_banner", "-i", "rtmp://"+stream.Ingest.Server+".angelthump.com/live/"+stream.User.Username+"?key="+utils.Config.Ingest.AuthKey,
 			"-max_muxing_queue_size", "9999", "-c:v", "libx264", "-x264opts", "no-scenecut", "-preset", "ultrafast", "-s", strconv.Itoa(output.Width)+"x"+strconv.Itoa(output.Height),
-			"-b:v", output.VideoBandwidth, "-b:a", output.AudioBandwidth, "-r", strconv.Itoa(output.FrameRate), "-g", strconv.Itoa(output.FrameRate*2),
+			"-b:v", output.VideoBandwidth, "-b:a", output.AudioBandwidth, "-r", strconv.Itoa(int(output.FrameRate)), "-g", strconv.Itoa(int(output.FrameRate*2)),
 			"-hls_flags", "+program_date_time+append_list+omit_endlist", "-hls_list_size", "6", "-hls_time", "2",
 			"-http_persistent", "1", "-ignore_io_errors", "1", "-method", "POST", "-headers", "Authorization: Bearer "+utils.Config.Ingest.AuthKey, "-f", "hls",
 			"-hls_segment_filename", utils.Config.Cache.Hostname+"/hls/"+stream.User.Username+"_"+output.Variant+"/%d.ts", utils.Config.Cache.Hostname+"/hls/"+stream.User.Username+"_"+output.Variant+"/index.m3u8")
