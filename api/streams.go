@@ -11,13 +11,15 @@ import (
 
 type Stream struct {
 	Ingest struct {
-		Server string `json:"server"`
-		Url    string `json:"url"`
+		Server   string `json:"server"`
+		Url      string `json:"url"`
+		Mediamtx bool   `json:"mediamtx"`
 	} `json:"ingest"`
 	User struct {
 		UserId   string `json:"id"`
 		Username string `json:"username"`
 	} `json:"user"`
+	Created_at string `json:"createdAt"`
 }
 
 type Transcode struct {
