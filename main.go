@@ -82,7 +82,7 @@ func startTranscode(stream *api.Stream, output api.Output) {
 	input := "rtmp://" + stream.Ingest.Server + ".angelthump.com/live/" + stream.User.Username + "?key=" + utils.Config.Ingest.AuthKey
 	if stream.Ingest.Mediamtx {
 		base64String := b64.StdEncoding.EncodeToString([]byte(stream.Created_at + stream.User.Username))
-		input = "http://" + utils.Config.Cache.Hostname + "/hls/" + base64String + "_" + stream.User.Username + "/index.m3u8"
+		input = utils.Config.Cache.Hostname + "/hls/" + base64String + "_" + stream.User.Username + "/index.m3u8"
 	}
 
 	if output.Variant == "src" {
