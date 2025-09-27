@@ -16,8 +16,9 @@ type Stream struct {
 		Mediamtx bool   `json:"mediamtx"`
 	} `json:"ingest"`
 	User struct {
-		UserId   string `json:"id"`
-		Username string `json:"username"`
+		UserId    string `json:"id"`
+		Username  string `json:"username"`
+		StreamKey string `json:"stream_key"`
 	} `json:"user"`
 	Created_at string `json:"createdAt"`
 }

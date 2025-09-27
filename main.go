@@ -77,7 +77,7 @@ func startTranscode(stream *api.Stream, output api.Output) {
 	log.Printf("[%s] Executing ffmpeg: %s", stream.User.Username, output.Variant)
 	var cmd *exec.Cmd
 
-	input := "rtmp://" + stream.Ingest.Server + ".angelthump.com/live/" + stream.User.Username + "?key=" + utils.Config.Ingest.AuthKey
+	input := "rtmp://" + stream.Ingest.Server + ".angelthump.com/live/" + stream.User.StreamKey + "?key=" + utils.Config.Ingest.AuthKey
 
 	if output.Variant == "src" {
 		cmd = exec.Command("ffmpeg", "-hide_banner", "-rtmp_enhanced_codecs", "hvc1,av01", "-i", input,
@@ -85,7 +85,7 @@ func startTranscode(stream *api.Stream, output api.Output) {
 			"-hls_flags", "append_list+omit_endlist+program_date_time", "-hls_list_size", "6", "-hls_time", "2",
 			"-hls_segment_type", "fmp4", "-hls_fmp4_init_filename", "init.mp4", "-hls_fmp4_init_resend", "1",
 			"-ignore_io_errors", "1", "-method", "POST", "-headers", "Authorization: Bearer "+utils.Config.Ingest.AuthKey, "-f", "hls",
-			"-hls_segment_filename", utils.Config.Cache.Hostname+"/live/"+stream.User.Username+"_"+output.Variant+"/%d.ts", utils.Config.Cache.Hostname+"/transcode/"+stream.User.Username+"_"+output.Variant+"/index.m3u8")
+			"-hls_segment_filename", utils.Config.Cache.Hostname+"/live/"+stream.User.StreamKey+"_"+output.Variant+"/%d.m4s", utils.Config.Cache.Hostname+"/transcode/"+stream.User.StreamKey+"_"+output.Variant+"/index.m3u8")
 	} else {
 		cmd = exec.Command("ffmpeg", "-hide_banner", "-rtmp_enhanced_codecs", "hvc1,av01", "-i", input,
 			"-max_muxing_queue_size", "9999", "-c:v", "libx264", "-x264opts", "no-scenecut", "-preset", "ultrafast", "-s", strconv.Itoa(output.Width)+"x"+strconv.Itoa(output.Height),
@@ -93,7 +93,7 @@ func startTranscode(stream *api.Stream, output api.Output) {
 			"-hls_flags", "append_list+omit_endlist+program_date_time", "-hls_list_size", "6", "-hls_time", "2",
 			"-hls_segment_type", "fmp4", "-hls_fmp4_init_filename", "init.mp4", "-hls_fmp4_init_resend", "1",
 			"-ignore_io_errors", "1", "-method", "POST", "-headers", "Authorization: Bearer "+utils.Config.Ingest.AuthKey, "-f", "hls",
-			"-hls_segment_filename", utils.Config.Cache.Hostname+"/live/"+stream.User.Username+"_"+output.Variant+"/%d.m4s", utils.Config.Cache.Hostname+"/transcode/"+stream.User.Username+"_"+output.Variant+"/index.m3u8")
+			"-hls_segment_filename", utils.Config.Cache.Hostname+"/live/"+stream.User.StreamKey+"_"+output.Variant+"/%d.m4s", utils.Config.Cache.Hostname+"/transcode/"+stream.User.StreamKey+"_"+output.Variant+"/index.m3u8")
 	}
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
