@@ -15,12 +15,14 @@ type Stream struct {
 		Url      string `json:"url"`
 		Mediamtx bool   `json:"mediamtx"`
 	} `json:"ingest"`
-	User struct {
-		UserId    string `json:"id"`
-		Username  string `json:"username"`
-		StreamKey string `json:"stream_key"`
-	} `json:"user"`
+	User       User   `json:"user"`
 	Created_at string `json:"createdAt"`
+}
+
+type User struct {
+	Id        string `json:"id"`
+	Username  string `json:"username"`
+	StreamKey string `json:"stream_key"`
 }
 
 type Transcode struct {
@@ -119,4 +121,26 @@ func SetTranscode(transcodeData *TranscodeData, transcoding bool) error {
 	}
 
 	return nil
+}
+
+func GetUser(id string) *User {
+	client := resty.New()
+	resp, _ := client.R().
+		SetHeader("X-Api-Key", utils.Config.StreamsAPI.AuthKey).
+		Get(utils.Config.StreamsAPI.Hostname + "/users/" + id)
+
+	statusCode := resp.StatusCode()
+	if statusCode >= 400 {
+		log.Printf("Unexpected status code, got %d %s", statusCode, string(resp.Body()))
+		return nil
+	}
+
+	var user User
+	err := json.Unmarshal(resp.Body(), &user)
+	if err != nil {
+		log.Printf("Unmarshal Error %v", err)
+		return nil
+	}
+
+	return &user
 }

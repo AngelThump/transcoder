@@ -49,6 +49,15 @@ func check(dropletId string) {
 		return
 	}
 
+	user := api.GetUser(stream.User.Id)
+	if user == nil {
+		time.AfterFunc(5*time.Second, func() {
+			check(dropletId)
+		})
+		return
+	}
+	stream.User = *user
+
 	if err := api.SetTranscode(transcodeData, true); err != nil {
 		log.Printf("Something went wrong trying to patch transcode %s", err)
 		time.AfterFunc(5*time.Second, func() {
